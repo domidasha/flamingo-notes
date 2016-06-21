@@ -27,7 +27,7 @@ class FlamingoListService
 
     public function updateNote($id, $user_id, $title, $text)
     {
-        $allNotes = array();
+
         $con = $this->connector->getConnection();
 
         $stmt = $con->prepare("UPDATE notes
@@ -40,7 +40,7 @@ class FlamingoListService
 
     public function createNote($title, $user_id, $text)
     {
-        $allNotes = array();
+
         $con = $this->connector->getConnection();
         $stmt = $con->prepare("INSERT INTO notes
                               (title, text, user_id)
@@ -68,6 +68,27 @@ class FlamingoListService
         return $Note;
 
     }
+
+
+    public function checkUser($login, $password) {
+
+        $con = $this->connector->getConnection();
+
+        $stmt = $con->prepare("SELECT id
+                              FROM users
+                              WHERE users.login = ?
+                              and users.password=?");
+        $stmt->execute(array($login, $password));
+        $row = $stmt->fetch();
+
+        if (!empty($row)) {
+            return $row['id'];
+        } else {
+            return false;
+        }
+    }
+
+
   }
 
 

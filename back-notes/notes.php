@@ -1,5 +1,5 @@
 <?php
-include('lib/FlamingoListService.php');
+include('functions.php');
 /**
  * Created by PhpStorm.
  * User: dasha
@@ -28,5 +28,6 @@ if (isset($_GET['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    echo "this is post!";
+
+    }
 }
