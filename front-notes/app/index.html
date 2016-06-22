@@ -1,31 +1,95 @@
 <!DOCTYPE html>
 <html>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 
-<div ng-app="myApp" ng-controller="myCtrl">
+<body ng-app="myApp" ng-controller="myCtrl">
 
+<div>
 <p>Today's welcome message is:</p>
 
 <h1>{{myWelcome}}</h1>
 
 </div>
 
-<p>The $http service requests a page on the server, and the response is set as the value of the "myWelcome" variable.</p>
+
+
+
+
+
 
 <script>
-var app = angular.module('myApp', []);
+
+
+    // app.js
+//    angular.module('myApp', [
+//        'ngRoute'
+//    ]).config(function ($routeProvider) {
+//        $routeProvider.when("/", {
+//            templateUrl: "views/login.html",
+//            controller: 'myCtrl'
+//        }).when("/settings", {
+//            templateUrl: "settings.html",
+//            controller: ''
+//        }).otherwise({
+//            redirectTo: "/"
+//        });
+//    }).controller
+
+
 app.controller('myCtrl', function($scope, $http) {
   $http({
-    method : "GET",
-    url: "http://www.w3schools.com/angular/customers.php"
-   // url : "http://flamingo-notes.dev/back-notes/notes.php/?id=1"
+      method : "GET",
+         url : "/back-notes/notes.php/",
+      params: {
+          id: 2
+      }
+
   }).then(function mySucces(response) {
       $scope.myWelcome = response.data;
     }, function myError(response) {
       $scope.myWelcome = response.statusText;
   });
 });
+
+
+//var app = angular.module("app", []);
+//
+//
+//app.controller("HttpGetController", function ($scope, $http) {
+//
+//    $scope.login = "admin";
+//    $scope.password = "123";
+//
+//
+//    $scope.SendData = function () {
+//        // use $.param jQuery function to serialize data from JSON
+//        var data = $.param({
+//            login: $scope.login,
+//            password: $scope.password
+//        });
+//
+//        var config = {
+//            headers : {
+//                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;',
+//                'Access-Control-Allow-Origin': '*'
+//            }
+//        }
+//
+//        $http.post('http://www.w3schools.com/angular/customers.php', data, config)
+//                .success(function (data, status, headers, config) {
+//                    $scope.PostDataResponse = data;
+//                })
+//                .error(function (data, status, header, config) {
+//                    $scope.ResponseDetails = "Data: " + data +
+//                    "<hr />status: " + status +
+//                    "<hr />headers: " + header +
+//                    "<hr />config: " + config;
+//                });
+//    };
+//
+//});
+
 </script>
 
 </body>
