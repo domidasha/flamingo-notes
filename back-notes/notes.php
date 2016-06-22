@@ -13,7 +13,7 @@ $flamingo -> updateNote(4, 2, 'Always like this', 'You can\'t stop what you can\
 //$flamingo -> createNote('movie1', 2, 'Mathilda since I met you everything been different. So I just need some time alone. You need some time to grow up a little.');
 $flamingo -> deleteNoteById(8);
 
-print_r($flamingo ->getNoteById(3));
+//print_r($flamingo ->getNoteById(3));
 //
 //$req = json_decode( file_get_contents('php://input'), true );
 //print_r($req);
@@ -30,4 +30,3 @@ if (isset($_GET['id'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     }
-}
