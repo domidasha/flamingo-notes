@@ -2,15 +2,28 @@
 include('functions.php');
 
 $response['success']='success';
+$response['message']='';
 $flamingo =  new FlamingoListService();
 
-//print_r($flamingo->checkUser('user', '1'));
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['login']) and isset($_POST['password'])) {
-        $login = $_POST['login'];
-        $password = $_POST['password'];
 
-        $flamingo->checkUser($login, $password);
+    $inputJSON = file_get_contents('php://input');
+    $user= json_decode( $inputJSON, TRUE ); //convert JSON into array
+
+
+    if (isset($user['login']) and isset($user['password'])) {
+        $login = $user['login'];
+        $password = $user['password'];
+
+        $id = $flamingo->checkUser($login, $password);
+
+        if ($id>0) {
+            $response['id'] = $id;
+        } else {
+            $response['success']='false';
+            $response['message']='wrong password or login';
+        }
+
+        echo json_encode($response);
     }
 }

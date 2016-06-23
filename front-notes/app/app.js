@@ -1,41 +1,65 @@
-
-//
-//angular.module ('app.angularGit', ['ngResource'])
-//    .factory('AngularGit', function($resource) {
-//        return $resource('http://flamingo-notes.dev/back-notes/notes.php/:id')
-//        //return $resource('https://routingnumbers.herokuapp.com/api/data.json?rn=1')
-//    });
+var  myApp = angular.module('myApp', ['ngRoute']);
 
 
-//
-//.factory('UserService', function ($resource) {
-//    return $resource('http://flamingo-notes.dev/back-notes/notes.php/:id',{id: "@id"});
-//});
 
+myApp.
+    config(function($routeProvider) {
 
-angular.module('myApp', [
-    'ngRoute', 'ngResource'
-]).config(function ($routeProvider) {
-    $routeProvider.when("/login", {
-        templateUrl: "views/login.html",
-        controller: 'myCtrl'
-    }).when("/settings", {
-        templateUrl: "settings.html",
-        controller: ''
-    }).otherwise({
-        redirectTo: "/"
-    });
-}).controller('myCtrl', function($scope, $http) {
-    $http({
-        method : "GET",
-        url : "/back-notes/notes.php/",
-        params: {
-            id: 2
+            $routeProvider.
+                when('/login', {
+                    templateUrl: "views/login.html",
+                    controller: 'LogCtrl'
+                }).
+                when('/notes/:noteId', {
+                    templateUrl: "views/user-notes.html",
+                    controller: 'NotesCtrl'
+                }).
+                otherwise({
+                    redirectTo: '/login'
+                });
+        })
+    .controller('NotesCtrl', function($scope, $http, $routeParams) {
+        $http({
+            method : "GET",
+            url : "/back-notes/notes.php/",
+            params: {
+                id: $routeParams.noteId
+            }
+
+        }).then(function mySucces(response) {
+            $scope.Notes = response['notes'];
+        }, function myError(response) {
+            $scope.Notes = response.statusText;
+        });
+    })
+    .controller('LogCtrl', function($scope, $http) {
+
+        $scope.SendData = function() {
+
+            var request =  $http({
+                method: 'POST',
+                url: '/back-notes/user.php/',
+                headers: {
+                    'Content-Type': undefined,
+                    'Access-Control-Allow-Headers': "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding",
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE, PUT"
+                },
+                data: {
+                    login: $scope.login,
+                    password: $scope.password
+                }
+            });
+            request.success(
+                function( response) {
+                    if (response['success']=='success') {
+                        $scope.PostDataResponse = response['id'];
+                    }
+                    else {
+                        $scope.PostDataResponse = response['message'];
+
+                    }
+                });
         }
-
-    }).then(function mySucces(response) {
-        $scope.myWelcome = response.data;
-    }, function myError(response) {
-        $scope.myWelcome = response.statusText;
     });
-});
+
+

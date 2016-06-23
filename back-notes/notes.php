@@ -7,6 +7,8 @@ include('functions.php');
  * Time: 17:00
  */
 $response['success']='success';
+$response['message'] = '';
+
 $flamingo =  new FlamingoListService();
 
 $flamingo -> updateNote(4, 2, 'Always like this', 'You can\'t stop what you can\'t see.');
@@ -21,8 +23,15 @@ $flamingo -> deleteNoteById(8);
 if (isset($_GET['id'])) {
     $userId = $_GET['id']; // val1
 
-    $response['notes'] = $flamingo->getAllNotesByUserId($userId);
+    $notes = $flamingo->getAllNotesByUserId($userId);
 
+    if (empty($notes)) {
+        $response['message'] = 'No notes are found.';
+        $response['success']='false';
+    }
+   else {
+       $response['notes'] = $notes;
+   }
    echo json_encode($response);
 
 }

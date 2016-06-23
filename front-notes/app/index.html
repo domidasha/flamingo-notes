@@ -1,96 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="app.js"></script>
+<body  >
 
-<body ng-app="myApp" ng-controller="myCtrl">
+<div ng-view></div>
 
-<div>
-<p>Today's welcome message is:</p>
+<!--<script>-->
+    <!--var app = angular.module('myApp', []);-->
+    <!--app.controller('NotesCtrl', function($scope, $http) {-->
+        <!--$scope.id=1;-->
 
-<h1>{{myWelcome}}</h1>
+        <!--$http({-->
+            <!--method : "GET",-->
+            <!--url : "/back-notes/notes.php/",-->
+            <!--params: {-->
+             <!--id: $scope.id-->
+            <!--}-->
 
-</div>
+        <!--}).then(function mySucces(response) {-->
+            <!--$scope.Notes = JSON.stringify(response.data);-->
+        <!--}, function myError(response) {-->
+            <!--$scope.Notes = response.statusText;-->
+        <!--});-->
+    <!--}).controller('LogCtrl', function($scope, $http) {-->
 
+        <!--$scope.SendData = function() {-->
 
+            <!--var request =  $http({-->
+                <!--method: 'POST',-->
+                <!--url: '/back-notes/user.php/',-->
+                <!--headers: {-->
+                    <!--'Content-Type': undefined,-->
+                    <!--'Access-Control-Allow-Headers': "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding",-->
+                    <!--'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE, PUT"-->
+                <!--},-->
+                <!--data: {-->
+                    <!--login: $scope.login,-->
+                    <!--password: $scope.password-->
+                <!--}-->
+            <!--});-->
+            <!--request.success(-->
+                    <!--function( response) {-->
+                        <!--if (response['success']=='success') {-->
+                            <!--$scope.PostDataResponse = response['id'];-->
+                        <!--}-->
+                        <!--else {-->
+                            <!--$scope.PostDataResponse = response['message'];-->
 
+                        <!--}-->
+                    <!--});-->
+        <!--}-->
+    <!--});-->
 
-
-
-
-<script>
-
-
-    // app.js
-//    angular.module('myApp', [
-//        'ngRoute'
-//    ]).config(function ($routeProvider) {
-//        $routeProvider.when("/", {
-//            templateUrl: "views/login.html",
-//            controller: 'myCtrl'
-//        }).when("/settings", {
-//            templateUrl: "settings.html",
-//            controller: ''
-//        }).otherwise({
-//            redirectTo: "/"
-//        });
-//    }).controller
-
-
-app.controller('myCtrl', function($scope, $http) {
-  $http({
-      method : "GET",
-         url : "/back-notes/notes.php/",
-      params: {
-          id: 2
-      }
-
-  }).then(function mySucces(response) {
-      $scope.myWelcome = response.data;
-    }, function myError(response) {
-      $scope.myWelcome = response.statusText;
-  });
-});
-
-
-//var app = angular.module("app", []);
-//
-//
-//app.controller("HttpGetController", function ($scope, $http) {
-//
-//    $scope.login = "admin";
-//    $scope.password = "123";
-//
-//
-//    $scope.SendData = function () {
-//        // use $.param jQuery function to serialize data from JSON
-//        var data = $.param({
-//            login: $scope.login,
-//            password: $scope.password
-//        });
-//
-//        var config = {
-//            headers : {
-//                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;',
-//                'Access-Control-Allow-Origin': '*'
-//            }
-//        }
-//
-//        $http.post('http://www.w3schools.com/angular/customers.php', data, config)
-//                .success(function (data, status, headers, config) {
-//                    $scope.PostDataResponse = data;
-//                })
-//                .error(function (data, status, header, config) {
-//                    $scope.ResponseDetails = "Data: " + data +
-//                    "<hr />status: " + status +
-//                    "<hr />headers: " + header +
-//                    "<hr />config: " + config;
-//                });
-//    };
-//
-//});
-
-</script>
+<!--</script>-->
 
 </body>
 </html>
+
