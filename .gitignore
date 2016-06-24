@@ -1,0 +1,7 @@
+.buildpath
+.project
+.settings/
+/front-notes/bower_components/*
+/front-notes/app/bower_components/*
+front-notes/bower_components/*
+front-notes/app/bower_components/*	
