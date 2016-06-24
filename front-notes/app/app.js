@@ -10,7 +10,7 @@ myApp.
                     templateUrl: "views/login.html",
                     controller: 'LogCtrl'
                 }).
-                when('/notes/:noteId', {
+                when('/notes/:userId', {
                     templateUrl: "views/user-notes.html",
                     controller: 'NotesCtrl'
                 }).
@@ -23,11 +23,12 @@ myApp.
             method : "GET",
             url : "/back-notes/notes.php/",
             params: {
-                id: $routeParams.noteId
+                id: $routeParams.userId
             }
 
         }).then(function mySucces(response) {
-            $scope.Notes = response['notes'];
+            $scope.Notes = response['data']['notes'];
+
         }, function myError(response) {
             $scope.Notes = response.statusText;
         });
@@ -53,6 +54,9 @@ myApp.
                 function( response) {
                     if (response['success']=='success') {
                         $scope.PostDataResponse = response['id'];
+                       // $window.location.href= "#/notes/"+response['id'];
+                        $scope.userId = response['id'];
+
                     }
                     else {
                         $scope.PostDataResponse = response['message'];

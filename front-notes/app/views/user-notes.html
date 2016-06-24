@@ -1,4 +1,14 @@
 
 <div ng-controller="NotesCtrl">
-    {{Notes}}
+
+    <div type="1" start="1" ng-repeat="note in Notes">
+
+            <h2>{{note.title}}</h2>
+            <a href="#/notes/{{note.id}}">edit</a>
+            <p>{{note.text}}</p>
+            <b>{{userId}}</b>
+
+    </div>
 </div>
+
+

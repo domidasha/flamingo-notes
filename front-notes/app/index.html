@@ -1,60 +1,13 @@
 <!DOCTYPE html>
 <html ng-app="myApp">
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="app.js"></script>
 <body  >
 
 <div ng-view></div>
 
-<!--<script>-->
-    <!--var app = angular.module('myApp', []);-->
-    <!--app.controller('NotesCtrl', function($scope, $http) {-->
-        <!--$scope.id=1;-->
-
-        <!--$http({-->
-            <!--method : "GET",-->
-            <!--url : "/back-notes/notes.php/",-->
-            <!--params: {-->
-             <!--id: $scope.id-->
-            <!--}-->
-
-        <!--}).then(function mySucces(response) {-->
-            <!--$scope.Notes = JSON.stringify(response.data);-->
-        <!--}, function myError(response) {-->
-            <!--$scope.Notes = response.statusText;-->
-        <!--});-->
-    <!--}).controller('LogCtrl', function($scope, $http) {-->
-
-        <!--$scope.SendData = function() {-->
-
-            <!--var request =  $http({-->
-                <!--method: 'POST',-->
-                <!--url: '/back-notes/user.php/',-->
-                <!--headers: {-->
-                    <!--'Content-Type': undefined,-->
-                    <!--'Access-Control-Allow-Headers': "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding",-->
-                    <!--'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE, PUT"-->
-                <!--},-->
-                <!--data: {-->
-                    <!--login: $scope.login,-->
-                    <!--password: $scope.password-->
-                <!--}-->
-            <!--});-->
-            <!--request.success(-->
-                    <!--function( response) {-->
-                        <!--if (response['success']=='success') {-->
-                            <!--$scope.PostDataResponse = response['id'];-->
-                        <!--}-->
-                        <!--else {-->
-                            <!--$scope.PostDataResponse = response['message'];-->
-
-                        <!--}-->
-                    <!--});-->
-        <!--}-->
-    <!--});-->
-
-<!--</script>-->
 
 </body>
 </html>

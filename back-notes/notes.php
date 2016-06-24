@@ -29,6 +29,7 @@ if (isset($_GET['id'])) {
         $response['message'] = 'No notes are found.';
         $response['success']='false';
     }
+
    else {
        $response['notes'] = $notes;
    }
