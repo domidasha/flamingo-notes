@@ -25,7 +25,7 @@ class FlamingoListService
     }
 
 
-    public function updateNote($id, $user_id, $title, $text)
+    public function updateNote($noteId, $title, $text)
     {
 
         $con = $this->connector->getConnection();
@@ -33,8 +33,8 @@ class FlamingoListService
         $stmt = $con->prepare("UPDATE notes
                               SET title = ?, text = ?
                               WHERE notes.id = ?
-                              and user_id=?");
-        $stmt->execute(array($title, $text, $id, $user_id));
+                              ");
+        $stmt->execute(array($title, $text, $noteId));
     }
 
 

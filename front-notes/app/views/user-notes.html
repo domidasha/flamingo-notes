@@ -1,12 +1,13 @@
 
 <div ng-controller="NotesCtrl">
-
+{{Message}}
     <div type="1" start="1" ng-repeat="note in Notes">
 
-            <h2>{{note.title}}</h2>
-            <a href="#/notes/{{note.id}}">edit</a>
-            <p>{{note.text}}</p>
-            <b>{{userId}}</b>
+
+            <input type="text" value="{{note.title}}" /> 
+            <a href="#/notes/{{note.id}}/edit">edit</a>
+            <a href="#/notes/{{note.id}}/delete">delete</a> <br>
+           <textarea id="text" style="width:300px;" >{{note.text}}</textarea><br><br>
 
     </div>
 </div>

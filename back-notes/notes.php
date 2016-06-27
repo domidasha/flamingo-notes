@@ -20,7 +20,7 @@ $flamingo -> deleteNoteById(8);
 //$req = json_decode( file_get_contents('php://input'), true );
 //print_r($req);
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) and ($_SESSION['userId']==$_GET['id']) ) {
     $userId = $_GET['id']; // val1
 
     $notes = $flamingo->getAllNotesByUserId($userId);
@@ -38,5 +38,14 @@ if (isset($_GET['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+	$noteId = $_POST['noteId'];
+	if ($_POST['action']=='delete') {
+		$flamingo -> deleteNoteById($_POST['noteId']);
+	}
+	if ($_POST['action']=='edit') {
+		$noteId = $_POST['noteId'];
+		$title= $_POST['title'];
+		$text = $_POST['text'];
+		$flamingo -> $flamingo -> updateNote(4, 2, 'Always like this', 'You can\'t stop what you can\'t see.');
+	}
     }
