@@ -48,4 +48,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$text = $_POST['text'];
 		$flamingo -> $flamingo -> updateNote(4, 2, 'Always like this', 'You can\'t stop what you can\'t see.');
 	}
-    }
+}
