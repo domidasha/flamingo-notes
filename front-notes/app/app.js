@@ -1,4 +1,4 @@
-var  myApp = angular.module('myApp', ['ngRoute']);
+var  myApp = angular.module('myApp', ['ngRoute', 'ngDialog']);
 
 myApp.
     config(function($routeProvider) {
@@ -91,6 +91,7 @@ myApp.
             $scope.Notes = response.statusText;
         });
     })
+    
     .controller('LogOutCtrl', function($location) {
     	window.location = '#/login';
     })
