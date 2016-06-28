@@ -146,6 +146,7 @@ myApp.
                 function( response) {
                     if (response['success']=='success') {
                         $scope.Message = response['message'];
+                        $scope.$apply();
                     }
                     else {
                         $scope.Message = response['message'];
