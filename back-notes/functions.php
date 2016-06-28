@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 function autoloader($class) {
     include 'lib/' . $class . '.php';
 }

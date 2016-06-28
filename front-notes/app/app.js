@@ -1,4 +1,12 @@
-var  myApp = angular.module('myApp', ['ngRoute', 'ngDialog']);
+var  myApp = angular.module('myApp', ['ngRoute']);
+
+
+angular.
+    module('myApp').
+    component('noteList', {
+        templateUrl:"note-list/note-list.template.html",
+        controller: 'NotesCtrl'
+    });
 
 myApp.
     config(function($routeProvider) {
@@ -8,18 +16,23 @@ myApp.
                     templateUrl: "views/login.html",
                     controller: 'LogCtrl'
                 }). 
-                when('#/notes/delete/:noteId/', {
+                when('/notes/delete/:noteId/', {
 	                templateUrl: "views/user-notes.html",
 	                controller: 'DeleteCtrl'
 	            }).	
-                when('#/notes/edit/:noteId/', {
-	                templateUrl: "views/user-notes.html",
-	                controller: 'EditCtrl'
+                when('/notes/edit/:noteId', {
+	               templateUrl: "views/user-notes.html",
+                    controller: 'EditCtrl'
+
 	            }).
                 when('/notes/:userId', {
-                    templateUrl: "views/user-notes.html",
+                    template: "<p>welcome. please refresh this page!</p>",
                     controller: 'NotesCtrl'
-                }).	                           
+                }).
+                when('/notes/new', {
+                    template: "<p>welcome. please refresh this page!</p>",
+                    controller: 'NotesCtrl'
+                }).
                 when('/logout', {
                 	templateUrl: "views/login.html",
                     controller: 'LogOutCtrl'
@@ -52,6 +65,8 @@ myApp.
                         $scope.userId = response['id'];
                         window.location = '#/notes/'+$scope.userId;
 
+                        $route.reload();
+
                     }
                     else {
                         $scope.PostDataResponse = response['message'];
@@ -61,9 +76,10 @@ myApp.
         }
     })
     .controller('NotesCtrl', function($scope, $http, $routeParams) {
+
         $http({
             method : "GET",
-            url : "/back-notes/notes.php/",
+            url : "/back-notes/user.php/",
             params: {
                 id: $routeParams.userId
             }
@@ -75,22 +91,69 @@ myApp.
             $scope.Notes = response.statusText;
         });
     })
-    .controller('DeleteEditCtrl', function($scope, $http, $routeParams) {
+    .controller('DeleteCtrl', function($scope, $http, $routeParams) {
         $http({
             method : "POST",
             url : "/back-notes/notes.php/",
+            params: {
+                id: $routeParams.noteId
+            },
             data: {
-                noteId: $routeParams.noteId,
-                action: $routeParams.action
+                action: 'delete'
+            }
+        }).then(function mySucces(response) {
+            console.log(response['success']);
+        }, function myError(response) {
+            console.log(response['message']);
+        });
+    })
+    .controller('EditCtrl', function($scope, $http, $routeParams ) {
+
+        $http({
+            method : "GET",
+            url : "/back-notes/notes.php/",
+            params: {
+                id: $routeParams.noteId
             }
 
         }).then(function mySucces(response) {
-            $scope.Notes = response['data']['notes'];
-
+           var Note = response['data']['note'];
+            $scope.noteId = Note.id;
+            $scope.noteTitle = Note.title;
+            $scope.noteText = Note.text;
         }, function myError(response) {
-            $scope.Notes = response.statusText;
+            $scope.Message = response['message'];
         });
+
+        $scope.updateNote  = function () {
+           var request =  $http({
+
+                method: 'POST',
+                url: '/back-notes/notes.php',
+                headers: {
+                    'Content-Type': undefined,
+                    'Access-Control-Allow-Headers': "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding",
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE, PUT"
+                },
+                data: {
+                    action: 'update',
+                    id: $scope.noteId,
+                    title:$scope.noteTitle,
+                    text: $scope.noteText
+                }
+            });
+            request.success(
+                function( response) {
+                    if (response['success']=='success') {
+                        $scope.Message = response['message'];
+                    }
+                    else {
+                        $scope.Message = response['message'];
+                    }
+                });
+        }
     })
+
     
     .controller('LogOutCtrl', function($location) {
     	window.location = '#/login';

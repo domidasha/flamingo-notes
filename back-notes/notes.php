@@ -11,41 +11,48 @@ $response['message'] = '';
 
 $flamingo =  new FlamingoListService();
 
-$flamingo -> updateNote(4, 2, 'Always like this', 'You can\'t stop what you can\'t see.');
-//$flamingo -> createNote('movie1', 2, 'Mathilda since I met you everything been different. So I just need some time alone. You need some time to grow up a little.');
-$flamingo -> deleteNoteById(8);
+//$flamingo -> updateNote(4, 2, 'Always like this', 'You can\'t stop what you can\'t see.');
+////$flamingo -> createNote('movie1', 2, 'Mathilda since I met you everything been different. So I just need some time alone. You need some time to grow up a little.');
+//$flamingo -> deleteNoteById(8);
 
-//print_r($flamingo ->getNoteById(3));
-//
-//$req = json_decode( file_get_contents('php://input'), true );
-//print_r($req);
 
-if (isset($_GET['id']) and ($_SESSION['userId']==$_GET['id']) ) {
-    $userId = $_GET['id']; // val1
+if (isset($_GET['id']) and isset($_SESSION['userId']) ) {
+    $noteId = $_GET['id']; // val1
 
-    $notes = $flamingo->getAllNotesByUserId($userId);
+    $note = $flamingo->getNoteById($noteId);
 
-    if (empty($notes)) {
+    if (empty($note)) {
         $response['message'] = 'No notes are found.';
         $response['success']='false';
     }
 
    else {
-       $response['notes'] = $notes;
+       $response['note'] = $note[0];
    }
+   // print_r($response['note']);
    echo json_encode($response);
 
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	$noteId = $_POST['noteId'];
-	if ($_POST['action']=='delete') {
-		$flamingo -> deleteNoteById($_POST['noteId']);
+
+    $inputJSON = file_get_contents('php://input');
+    $note= json_decode( $inputJSON, TRUE );
+
+	$noteId = $note['id'];
+	if ($note['action']=='delete') {
+		$flamingo -> deleteNoteById($note['id']);
+
 	}
-	if ($_POST['action']=='edit') {
-		$noteId = $_POST['noteId'];
-		$title= $_POST['title'];
-		$text = $_POST['text'];
-		$flamingo -> $flamingo -> updateNote(4, 2, 'Always like this', 'You can\'t stop what you can\'t see.');
+	if ($note['action']=='update') {
+		$title= $note['title'];
+		$text = $note['text'];
+		$flamingo -> updateNote($noteId, $title, $text);
+        $response['message'] = 'note is changed successfully';
 	}
+    else {
+        $response['success']='false';
+        $response['message'] = 'error';
+    }
+    echo json_encode($response);
 }

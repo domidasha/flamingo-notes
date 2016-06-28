@@ -28,3 +28,30 @@
   content: "";
   padding: 0;
 }
+
+.view {
+    float: left;
+    width: 50%;
+    background-color: #fbd850;
+    padding: 15px;
+}
+
+textarea {
+    width: 600px;
+    height: 250px;
+}
+
+.notes {
+    width: 25%;
+    float: left;
+    margin-right: 15px;
+
+}
+
+.note {
+    background-color: lightcyan;
+    padding: 10px;
+}
+
+
+

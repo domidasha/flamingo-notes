@@ -1,18 +1,15 @@
 
-<div ng-controller="NotesCtrl">
+<div>
 
-    {{Message}}
-   
-    <div type="1" start="1" ng-repeat="note in Notes">
-
- 			
-            <input type="text" value="{{note.title}}" /> 
-            <a href="#" ng-click="clickToOpen()">edit</a>
-            <a href="#/notes/{{note.id}}/delete">delete</a> <br>
-           <textarea id="text" style="width:300px;" >{{note.text}}</textarea><br><br>
+    <div type="1" start="1" class="edit">
+        <input type="text" ng-model="noteTitle" /><br>
+        <br><textarea id="text" ng-model="noteText"></textarea><br>
+        <br><input type="button" value="edit" ng-click="updateNote()" />
 
     </div>
-    <p><a href="#/notes/new">add new</a><br><br> </p>
+
+    {{Message}}
+
 </div>
 
 
