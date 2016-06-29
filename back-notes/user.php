@@ -14,7 +14,6 @@ if (isset($_GET['id']) and isset($_SESSION['userId']) ) {
         $response['message'] = 'No notes are found.';
         $response['success']='false';
     }
-
     else {
         $response['notes'] = $notes;
     }

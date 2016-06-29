@@ -35,12 +35,10 @@ class FlamingoListService
                               WHERE notes.id = ?
                               ");
         $stmt->execute(array($title, $text, $noteId));
-
-
     }
 
 
-    public function createNote($title, $user_id, $text)
+    public function createNote($title, $text, $user_id)
     {
 
         $con = $this->connector->getConnection();

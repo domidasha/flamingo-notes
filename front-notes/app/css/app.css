@@ -31,9 +31,11 @@
 
 .view {
     float: left;
-    width: 50%;
+    width: 600px;
     background-color: #fbd850;
     padding: 15px;
+    position: fixed;
+    margin-left: 500px;
 }
 
 textarea {
@@ -42,7 +44,7 @@ textarea {
 }
 
 .notes {
-    width: 25%;
+    width: 450px;
     float: left;
     margin-right: 15px;
 

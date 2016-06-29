@@ -11,6 +11,7 @@ $response['message'] = '';
 
 $flamingo =  new FlamingoListService();
 
+
 //$flamingo -> updateNote(4, 2, 'Always like this', 'You can\'t stop what you can\'t see.');
 ////$flamingo -> createNote('movie1', 2, 'Mathilda since I met you everything been different. So I just need some time alone. You need some time to grow up a little.');
 //$flamingo -> deleteNoteById(8);
@@ -37,22 +38,27 @@ if (isset($_GET['id']) and isset($_SESSION['userId']) ) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $inputJSON = file_get_contents('php://input');
-    $note= json_decode( $inputJSON, TRUE );
-
-	$noteId = $note['id'];
+    $note = json_decode( $inputJSON, TRUE );
+	
 	if ($note['action']=='delete') {
+		$noteId = $note['id'];
 		$flamingo -> deleteNoteById($note['id']);
 
 	}
 	if ($note['action']=='update') {
+		$noteId = $note['id'];
 		$title= $note['title'];
 		$text = $note['text'];
 		$flamingo -> updateNote($noteId, $title, $text);
         $response['message'] = 'note is changed successfully';
 	}
-    else {
-        $response['success']='false';
-        $response['message'] = 'error';
-    }
+	if ($note['action']=='add') {
+		$userId = $_SESSION['userId']; 
+		$title= $note['title'];
+		$text = $note['text'];
+		$flamingo -> createNote($title, $text, $userId);
+		$response['message'] = 'new note is added successfully';
+	}
+    
     echo json_encode($response);
 }

@@ -23,8 +23,11 @@ myApp.
                 when('/notes/edit/:noteId', {
 	               templateUrl: "views/user-notes.html",
                     controller: 'EditCtrl'
-
 	            }).
+                when( '/new', {
+     	               templateUrl: "views/user-notes.html",
+                         controller: 'NewCtrl'
+     	            }).
                 when('/notes/:userId', {
                     template: "<p>welcome. please refresh this page!</p>",
                     controller: 'NotesCtrl'
@@ -63,10 +66,7 @@ myApp.
                     if (response['success']=='success') {
                         $scope.PostDataResponse = response['id'];
                         $scope.userId = response['id'];
-                        window.location = '#/notes/'+$scope.userId;
-
-                        $route.reload();
-
+                        window.location = 'http://flamingo-notes.dev/front-notes/app/index.html#/notes/'+$scope.userId;
                     }
                     else {
                         $scope.PostDataResponse = response['message'];
@@ -95,10 +95,8 @@ myApp.
         $http({
             method : "POST",
             url : "/back-notes/notes.php/",
-            params: {
-                id: $routeParams.noteId
-            },
             data: {
+            	id: $routeParams.noteId,
                 action: 'delete'
             }
         }).then(function mySucces(response) {
@@ -126,6 +124,7 @@ myApp.
         });
 
         $scope.updateNote  = function () {
+        	
            var request =  $http({
 
                 method: 'POST',
@@ -136,9 +135,37 @@ myApp.
                     'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE, PUT"
                 },
                 data: {
+                	
                     action: 'update',
                     id: $scope.noteId,
                     title:$scope.noteTitle,
+                    text: $scope.noteText
+                }
+            });
+            request.success(
+                function( response) {
+                    if (response['success']=='success') {
+                        $scope.Message = response['message'];
+              
+                    }
+                    else {
+                        $scope.Message = response['message'];
+                    }
+                });
+        }
+    })
+    .controller('NewCtrl', function($scope, $http ) {
+
+    	$scope.noteTitle = Date();
+    	$scope.noteText = '';
+    	
+        $scope.updateNote  = function () {
+           var request =  $http({
+                method: 'POST',
+                url: '/back-notes/notes.php',
+                data: {
+                    action: 'add',
+                    title: $scope.noteTitle,
                     text: $scope.noteText
                 }
             });
