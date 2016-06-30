@@ -34,6 +34,7 @@ myApp.
                 }).
                 when('/notes/new', {
                     template: "<p>welcome. please refresh this page!</p>",
+                    //templateUrl:"note-list/note-list.template.html",
                     controller: 'NotesCtrl'
                 }).
                 when('/logout', {
@@ -46,7 +47,7 @@ myApp.
         })
     .controller('LogCtrl', function($scope, $http, $location) {
 
-        $scope.SendData = function() {
+       $scope.SendData = function() {
 
             var request =  $http({
                 method: 'POST',
@@ -86,7 +87,7 @@ myApp.
 
         }).then(function mySucces(response) {
             $scope.Notes = response['data']['notes'];
-
+            $scope.add = 'Add new Note';
         }, function myError(response) {
             $scope.Notes = response.statusText;
         });
@@ -146,7 +147,11 @@ myApp.
                 function( response) {
                     if (response['success']=='success') {
                         $scope.Message = response['message'];
-              
+                        function refresh() {
+                            $scope.$apply(function(){
+                                $scope.Notes =  data.url;
+                            });
+                        }
                     }
                     else {
                         $scope.Message = response['message'];
@@ -173,7 +178,6 @@ myApp.
                 function( response) {
                     if (response['success']=='success') {
                         $scope.Message = response['message'];
-                        $scope.$apply();
                     }
                     else {
                         $scope.Message = response['message'];
@@ -185,6 +189,7 @@ myApp.
     
     .controller('LogOutCtrl', function($location) {
     	window.location = '#/login';
+
     })
 
 
