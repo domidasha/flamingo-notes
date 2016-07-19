@@ -12,6 +12,10 @@ $response['message'] = '';
 $flamingo =  new FlamingoListService();
 
 
+
+
+
+
 //$flamingo -> updateNote(4, 2, 'Always like this', 'You can\'t stop what you can\'t see.');
 ////$flamingo -> createNote('movie1', 2, 'Mathilda since I met you everything been different. So I just need some time alone. You need some time to grow up a little.');
 //$flamingo -> deleteNoteById(8);
@@ -51,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$text = $note['text'];
 		$flamingo -> updateNote($noteId, $title, $text);
         $response['message'] = 'note is changed successfully';
+        $response['id'] = $_SESSION['userId'];
 	}
 	if ($note['action']=='add') {
 		$userId = $_SESSION['userId']; 

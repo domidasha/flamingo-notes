@@ -29,11 +29,11 @@ myApp.
                          controller: 'NewCtrl'
      	            }).
                 when('/notes/:userId', {
-                    template: "<p>welcome. please refresh this page!</p>",
+                    template: "<p>welcome. please refresh this page!</p> <p><a href='#/new'>Add new</a></p>",
                     controller: 'NotesCtrl'
                 }).
                 when('/notes/new', {
-                    template: "<p>welcome. please refresh this page!</p>",
+                    template: "<p><a href='#/new'>Add new</a></p>",
                     //templateUrl:"note-list/note-list.template.html",
                     controller: 'NotesCtrl'
                 }).
@@ -45,10 +45,70 @@ myApp.
                     redirectTo: '/login'
                 });
         })
-    .controller('LogCtrl', function($scope, $http, $location) {
+
+
+    .controller('LogCtrl', function($scope, $http) {
+
+
+/////////////////////////////////////////
+
+        //var getServiceTypeSettings = function(){
+        //    return $http.get(apiBase + 'ServiceType')
+        //        .success(function (data, status, headers, config) {
+        //            //Clear existing vendor data from Observable array
+        //            if(ServiceTypes.length > 0){
+        //                ServiceTypes.splice(0, ServiceTypes.length);
+        //            }
+        //            //Push the new data to the Observable array all at once
+        //            ServiceTypes.push.apply(ServiceTypes, data);
+        //
+        //
+        //            ServiceTypesSource = new kendo.data.DataSource({data: ServiceTypes});
+        //            return ServiceTypesSource;
+        //        });
+        //};
+        //
+        //
+        //var createServiceTypeSetting = function(data) {
+        //    return $http.post(apiBase + 'ServiceType', data).then(function(data){
+        //        return data;
+        //    });
+        //};
+        //
+        //var updateServiceTypeSetting = function(data, page) {
+        //    return $http({method: 'PUT', url: apiBase + 'ServiceType', data: data}).then(function (data) {
+        //        data.page = page;
+        //        return data;
+        //    });
+        //};
+        //
+        //console.log(apiBase);
+        //console.log('ok');
+
+        /////////////////////////////////
+
+        $scope.Register = function() {
+            var data = {
+                login: $scope.login,
+                password: $scope.password,
+                action: 'register'
+
+            }
+            return $http.post('http://flamingo-notes.dev/back-notes/user.php', data).then(function(result){
+
+               // console.log(result.data);
+                if (result.data.success=='true') {
+                    console.log('good');
+                    $scope.PostDataResponse = result.data.message;
+                } else {
+                    console.log('bad');
+                    $scope.PostDataResponse = result.data.message;
+                }
+                return result;
+            });
+        }
 
        $scope.SendData = function() {
-
             var request =  $http({
                 method: 'POST',
                 url: '/back-notes/index.php/',
@@ -63,7 +123,7 @@ myApp.
                 }
             });
             request.success(
-                function( response) {
+                function(response) {
                     if (response['success']=='success') {
                         $scope.PostDataResponse = response['id'];
                         $scope.userId = response['id'];
@@ -76,6 +136,12 @@ myApp.
                 });
         }
     })
+    .controller('FirstController', function($scope) {
+
+})
+    .controller('SecondController', function($scope) {
+
+})
     .controller('NotesCtrl', function($scope, $http, $routeParams) {
 
         $http({

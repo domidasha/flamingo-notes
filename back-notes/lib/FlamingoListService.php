@@ -88,6 +88,35 @@ class FlamingoListService
         }
     }
 
+    public function checkUserLogin($login) {
+
+        $con = $this->connector->getConnection();
+
+        $stmt = $con->prepare("SELECT login
+                              FROM users
+                              WHERE login = ?");
+
+        $stmt->execute(array($login));
+
+        $row = $stmt->fetch();
+
+        if (!empty($row)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function createUser($login, $password)
+    {
+        $con = $this->connector->getConnection();
+        $stmt = $con->prepare("INSERT INTO users
+                              (login, password)
+                              VALUES (?, ?)");
+        $stmt->execute(array($login, $password));
+    }
+
 
   }
 
