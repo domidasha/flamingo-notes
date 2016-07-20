@@ -34,26 +34,69 @@
     width: 600px;
     background-color: #fbd850;
     padding: 15px;
-    position: fixed;
-    margin-left: 500px;
+    margin-left: 300px;
 }
 
 textarea {
-    width: 600px;
+    width: 510px;
     height: 250px;
+    padding: 15px;
 }
 
 .notes {
-    width: 450px;
+    width: 420px;
     float: left;
     margin-right: 15px;
-
 }
 
 .note {
     background-color: lightcyan;
     padding: 10px;
+    border-bottom: 1px dashed;
+    border-color: #fbd850;
+    padding-bottom: 15px;
 }
+
+.notes a{
+    text-decoration: none;
+    color: #fbd850;
+    background-color: #000000;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+
+.login {
+    position: fixed;
+    margin-left: 50px;
+    background-color: #fbd850;
+    border: 3px solid;
+    border-color: lightcyan;
+    width: 200px;
+}
+
+.login ul {
+    list-style: none;
+}
+
+.login a, .edit {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.login a:hover{
+    color:lightcyan;
+}
+
+.error {
+    color: orangered;
+}
+
+.success {
+    color: greenyellow;
+}
+
 
 
 

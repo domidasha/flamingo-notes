@@ -36,10 +36,11 @@ if (isset($_GET['id']) and isset($_SESSION['userId']) ) {
    }
    // print_r($response['note']);
    echo json_encode($response);
-
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $response['success'] = true;
 
     $inputJSON = file_get_contents('php://input');
     $note = json_decode( $inputJSON, TRUE );
@@ -55,14 +56,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$text = $note['text'];
 		$flamingo -> updateNote($noteId, $title, $text);
         $response['message'] = 'note is changed successfully';
-        $response['id'] = $_SESSION['userId'];
+        $response['userId'] = $_SESSION['userId'];
 	}
 	if ($note['action']=='add') {
-		$userId = $_SESSION['userId']; 
-		$title= $note['title'];
-		$text = $note['text'];
-		$flamingo -> createNote($title, $text, $userId);
-		$response['message'] = 'new note is added successfully';
+		$userId = $_SESSION['userId'];
+        $title= $note['title'];
+        $text = $note['text'];
+
+        if ($title!='' and $text!='') {
+            $flamingo -> createNote($title, $text, $userId);
+            $response['message'] = 'new note is added successfully';
+            $response['userId'] = $userId;
+        }
+		else {
+            $response['success'] = false;
+            $response['message'] = 'Title and Text are required';
+        }
+
 	}
     
     echo json_encode($response);

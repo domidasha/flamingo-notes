@@ -17,7 +17,7 @@ myApp.
                     controller: 'LogCtrl'
                 }). 
                 when('/notes/delete/:noteId/', {
-	                templateUrl: "views/user-notes.html",
+	                templateUrl: "note-list/note-list.template.html",
 	                controller: 'DeleteCtrl'
 	            }).	
                 when('/notes/edit/:noteId', {
@@ -25,16 +25,11 @@ myApp.
                     controller: 'EditCtrl'
 	            }).
                 when( '/new', {
-     	               templateUrl: "views/user-notes.html",
-                         controller: 'NewCtrl'
+                   templateUrl: "views/user-notes.html",
+                     controller: 'NewCtrl'
      	            }).
                 when('/notes/:userId', {
-                    template: "<p>welcome. please refresh this page!</p> <p><a href='#/new'>Add new</a></p>",
-                    controller: 'NotesCtrl'
-                }).
-                when('/notes/new', {
-                    template: "<p><a href='#/new'>Add new</a></p>",
-                    //templateUrl:"note-list/note-list.template.html",
+                    templateUrl:"note-list/note-list.template.html",
                     controller: 'NotesCtrl'
                 }).
                 when('/logout', {
@@ -45,64 +40,22 @@ myApp.
                     redirectTo: '/login'
                 });
         })
+ .controller('LogCtrl', function($scope, $http) {
 
+      $scope.Register = function() {
 
-    .controller('LogCtrl', function($scope, $http) {
-
-
-/////////////////////////////////////////
-
-        //var getServiceTypeSettings = function(){
-        //    return $http.get(apiBase + 'ServiceType')
-        //        .success(function (data, status, headers, config) {
-        //            //Clear existing vendor data from Observable array
-        //            if(ServiceTypes.length > 0){
-        //                ServiceTypes.splice(0, ServiceTypes.length);
-        //            }
-        //            //Push the new data to the Observable array all at once
-        //            ServiceTypes.push.apply(ServiceTypes, data);
-        //
-        //
-        //            ServiceTypesSource = new kendo.data.DataSource({data: ServiceTypes});
-        //            return ServiceTypesSource;
-        //        });
-        //};
-        //
-        //
-        //var createServiceTypeSetting = function(data) {
-        //    return $http.post(apiBase + 'ServiceType', data).then(function(data){
-        //        return data;
-        //    });
-        //};
-        //
-        //var updateServiceTypeSetting = function(data, page) {
-        //    return $http({method: 'PUT', url: apiBase + 'ServiceType', data: data}).then(function (data) {
-        //        data.page = page;
-        //        return data;
-        //    });
-        //};
-        //
-        //console.log(apiBase);
-        //console.log('ok');
-
-        /////////////////////////////////
-
-        $scope.Register = function() {
             var data = {
                 login: $scope.login,
                 password: $scope.password,
                 action: 'register'
-
             }
             return $http.post('http://flamingo-notes.dev/back-notes/user.php', data).then(function(result){
-
-               // console.log(result.data);
                 if (result.data.success=='true') {
-                    console.log('good');
                     $scope.PostDataResponse = result.data.message;
+                    $scope.errorMessage = false;
                 } else {
-                    console.log('bad');
-                    $scope.PostDataResponse = result.data.message;
+                    $scope.errorMessage = result.data.message;
+                    $scope.PostDataResponse = false;
                 }
                 return result;
             });
@@ -125,25 +78,19 @@ myApp.
             request.success(
                 function(response) {
                     if (response['success']=='success') {
-                        $scope.PostDataResponse = response['id'];
                         $scope.userId = response['id'];
                         window.location = 'http://flamingo-notes.dev/front-notes/app/index.html#/notes/'+$scope.userId;
+                        $scope.errorMessage = false;
                     }
                     else {
-                        $scope.PostDataResponse = response['message'];
+                        $scope.errorMessage = response['message'];
 
                     }
                 });
         }
     })
-    .controller('FirstController', function($scope) {
-
-})
-    .controller('SecondController', function($scope) {
-
-})
-    .controller('NotesCtrl', function($scope, $http, $routeParams) {
-
+    .controller('NotesCtrl' , function($scope, $http, $routeParams) {
+        console.log($routeParams.userId);
         $http({
             method : "GET",
             url : "/back-notes/user.php/",
@@ -191,6 +138,8 @@ myApp.
         });
 
         $scope.updateNote  = function () {
+
+            $scope.userId = '';
         	
            var request =  $http({
 
@@ -202,7 +151,6 @@ myApp.
                     'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE, PUT"
                 },
                 data: {
-                	
                     action: 'update',
                     id: $scope.noteId,
                     title:$scope.noteTitle,
@@ -211,8 +159,10 @@ myApp.
             });
             request.success(
                 function( response) {
-                    if (response['success']=='success') {
+                    if (response['success']) {
                         $scope.Message = response['message'];
+                        $scope.userId = response['userId'];
+
                         function refresh() {
                             $scope.$apply(function(){
                                 $scope.Notes =  data.url;
@@ -227,7 +177,7 @@ myApp.
     })
     .controller('NewCtrl', function($scope, $http ) {
 
-    	$scope.noteTitle = Date();
+    	$scope.noteTitle = '';
     	$scope.noteText = '';
     	
         $scope.updateNote  = function () {
@@ -244,6 +194,7 @@ myApp.
                 function( response) {
                     if (response['success']=='success') {
                         $scope.Message = response['message'];
+                        $scope.userId = response['userId'];
                     }
                     else {
                         $scope.Message = response['message'];

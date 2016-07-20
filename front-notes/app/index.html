@@ -9,33 +9,20 @@
 <script src="app.js"></script>
 <body>
 <header>
-    <ul>
-        <li><a href="#/login">Log in / Log Out</a></li>
-        <!--<li><a href="#/notes">Show List</a></li>-->
-        <li><a href="#/new">Add new </a></li>
-
-    </ul>
+    <div class="login">
+        <ul>
+            <li><a href="#/login">Login</a></li>
+            <!--<li><a href="#/notes">Show List</a></li>-->
+            <li><a href="#/new">Add new </a></li>
+        </ul>
+    </div>
 </header>
 
 
-    <input type="text" ng-model="data.message">
-    <h1>{{data.message}}</h1>
-
-    <div ng-controller="FirstController">
-        <input type="text" ng-model="data.message">
-        <h1>{{data.message}}</h1>
-    </div>
-    <div ng-controller="SecondController">
-        <input type="text" ng-model="data.message">
-        <h1>{{data.message}}</h1>
-    </div>
 
 
-<note-list note="ctrl.note"></note-list>
+<!--<note-list ></note-list>-->
 <div ng-view class="view"></div>
-
-<div >
-
 
 </body>
 </html>

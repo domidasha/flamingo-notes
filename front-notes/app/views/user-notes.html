@@ -1,11 +1,16 @@
 
 <div>
-
-    <div  class="edit">
-        <input type="text" ng-model="noteTitle" /><br>
-        <br><textarea id="text" ng-model="noteText"></textarea><br><br>
-        <input type="button" value="ok" ng-click="updateNote()" />
-
+    <div class="edit">
+        <form name="form" >
+            <p>Title :</p>
+            <input type="text" ng-model="noteTitle" required /><br>
+            <p>Text :</p>
+            <textarea id="text" ng-model="noteText" required></textarea><br><br>
+            <input type="button" value="Save" ng-click="updateNote()"/>
+            <a href="http://flamingo-notes.dev/front-notes/app/index.html#/notes/{{userId}}">
+                <button>Ok</button>
+            </a>
+        </form>
     </div>
 
     {{Message}}
