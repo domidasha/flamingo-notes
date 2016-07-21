@@ -17,19 +17,19 @@ myApp.
                     controller: 'LogCtrl'
                 }). 
                 when('/notes/delete/:noteId/', {
-	                templateUrl: "note-list/note-list.template.html",
+	                templateUrl: "views/user-notes.html",
 	                controller: 'DeleteCtrl'
 	            }).	
                 when('/notes/edit/:noteId', {
-	               templateUrl: "views/user-notes.html",
+	               template: '<note-list></note-list>',
                     controller: 'EditCtrl'
 	            }).
                 when( '/new', {
-                   templateUrl: "views/user-notes.html",
+                     templateUrl: "views/user-notes.html",
                      controller: 'NewCtrl'
      	            }).
                 when('/notes/:userId', {
-                    templateUrl:"note-list/note-list.template.html",
+                    templateUrl:"views/user-notes.html",
                     controller: 'NotesCtrl'
                 }).
                 when('/logout', {
@@ -39,11 +39,10 @@ myApp.
                 otherwise({
                     redirectTo: '/login'
                 });
-        })
+    })
+
  .controller('LogCtrl', function($scope, $http) {
-
       $scope.Register = function() {
-
             var data = {
                 login: $scope.login,
                 password: $scope.password,
@@ -77,7 +76,7 @@ myApp.
             });
             request.success(
                 function(response) {
-                    if (response['success']=='success') {
+                    if (response['success']) {
                         $scope.userId = response['id'];
                         window.location = 'http://flamingo-notes.dev/front-notes/app/index.html#/notes/'+$scope.userId;
                         $scope.errorMessage = false;
@@ -90,7 +89,7 @@ myApp.
         }
     })
     .controller('NotesCtrl' , function($scope, $http, $routeParams) {
-        console.log($routeParams.userId);
+
         $http({
             method : "GET",
             url : "/back-notes/user.php/",
@@ -98,12 +97,11 @@ myApp.
                 id: $routeParams.userId
             }
 
-        }).then(function mySucces(response) {
+        }).then(function mySuccess(response) {
+            console.log(response);
             $scope.Notes = response['data']['notes'];
-            $scope.add = 'Add new Note';
-        }, function myError(response) {
-            $scope.Notes = response.statusText;
-        });
+            $scope.Message = response['message'];
+         })
     })
     .controller('DeleteCtrl', function($scope, $http, $routeParams) {
         $http({
@@ -113,10 +111,21 @@ myApp.
             	id: $routeParams.noteId,
                 action: 'delete'
             }
-        }).then(function mySucces(response) {
-            console.log(response['success']);
-        }, function myError(response) {
-            console.log(response['message']);
+        }).then(function mySuccess(response) {
+
+            $http({
+                method : "GET",
+                url : "/back-notes/user.php/",
+                params: {
+                    id: response.data.userId
+                }
+
+            }).then(function mySuccess(response) {
+
+                $scope.Notes = response['data']['notes'];
+                $scope.Message = response['message'];
+
+            })
         });
     })
     .controller('EditCtrl', function($scope, $http, $routeParams ) {
@@ -128,7 +137,7 @@ myApp.
                 id: $routeParams.noteId
             }
 
-        }).then(function mySucces(response) {
+        }).then(function mySuccess(response) {
            var Note = response['data']['note'];
             $scope.noteId = Note.id;
             $scope.noteTitle = Note.title;
@@ -138,11 +147,8 @@ myApp.
         });
 
         $scope.updateNote  = function () {
-
-            $scope.userId = '';
-        	
+           $scope.userId = '';
            var request =  $http({
-
                 method: 'POST',
                 url: '/back-notes/notes.php',
                 headers: {
@@ -179,9 +185,12 @@ myApp.
 
     	$scope.noteTitle = '';
     	$scope.noteText = '';
+
     	
-        $scope.updateNote  = function () {
-           var request =  $http({
+        $scope.updateNote = function () {
+            $scope.userId = '';
+
+           var request = $http({
                 method: 'POST',
                 url: '/back-notes/notes.php',
                 data: {
@@ -191,10 +200,12 @@ myApp.
                 }
             });
             request.success(
-                function( response) {
-                    if (response['success']=='success') {
+                function(response) {
+                        console.log(response);
+                    if (response['success']) {
                         $scope.Message = response['message'];
                         $scope.userId = response['userId'];
+                        console.log('userId:' + $scope.userId);
                     }
                     else {
                         $scope.Message = response['message'];
@@ -204,9 +215,11 @@ myApp.
     })
 
     
-    .controller('LogOutCtrl', function($location) {
-    	window.location = '#/login';
-
+    .controller('LogOutCtrl', function($http, $location) {
+        $http({
+            method : "GET",
+            url : "/back-notes/logout.php/"
+        }).then(function mySuccess(response) {
+            window.location = '#/login';
+        });
     })
-
-

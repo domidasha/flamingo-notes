@@ -1,6 +1,10 @@
 
 <div class ="notes">
-    <div>
+    <div >{{Message}}
+        <a href="#/new">Add new </a>
+        <a href='#/logout'>Logout </a>
+
+
         <div type="1" start="1" ng-repeat="note in Notes" class="note">
 
             <h2>{{note.title}} </h2>
@@ -12,5 +16,7 @@
     </div>
 </div>
 
+
+<!--ng-if="Message"-->
 
 

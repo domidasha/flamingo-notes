@@ -3,9 +3,20 @@
     <div class="edit">
         <form name="form" >
             <p>Title :</p>
-            <input type="text" ng-model="noteTitle" required /><br>
+            <input type="text" ng-model="noteTitle" required />
+
+            <select id="priority" ng-model="data.singleSelect">
+                <option value="High Priority">High Priority</option>
+                <option value="Medium Priority">Medium Priority</option>
+                <option value="Low Priority">Low Priority</option>
+            </select><br>
+
+
+            <p>singleSelect = {{data.singleSelect}} </p>
+
             <p>Text :</p>
-            <textarea id="text" ng-model="noteText" required></textarea><br><br>
+            <textarea id="text" ng-model="noteText" required></textarea><br>
+
             <input type="button" value="Save" ng-click="updateNote()"/>
             <a href="http://flamingo-notes.dev/front-notes/app/index.html#/notes/{{userId}}">
                 <button>Ok</button>

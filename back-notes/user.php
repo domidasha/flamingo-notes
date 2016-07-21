@@ -22,25 +22,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
             $flamingo ->createUser($newUser['login'], $newUser['password']);
         }
     }
-
     echo json_encode($response);
 }
 
-if (isset($_GET['id']) and isset($_SESSION['userId']) ) {
-    $userId = $_GET['id']; // val1
 
-    $notes = $flamingo->getAllNotesByUserId($userId);
+if (isset($_GET['id'])) {
+    if ($_GET['id'] == $_SESSION['userId']) {
 
-    if (!empty($notes)) {
-        $response['notes'] = $notes;
-        $response['success']='true';
+        $userId = $_GET['id']; // val1
+        $notes = $flamingo->getAllNotesByUserId($userId);
+
+        if (!empty($notes)) {
+            $response['notes'] = $notes;
+        } else {
+            $response['message'] = 'No notes are found.';
+        }
+        $response['success'] = true;
     }
-    else {
-        $response['message'] = 'No notes are found.';
-        $response['success']='false';
-    }
-    echo json_encode($response);
-//
-//    $url = "http://flamingo-notes.dev/front-notes/app/index.html";
-//    header('Location: '.$url);
+else {
+    $response['success'] = false;
+    $response['message'] = 'Access is not allowed.';
 }
+    echo json_encode($response);
+};
