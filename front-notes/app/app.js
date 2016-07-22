@@ -5,12 +5,14 @@ angular.
     module('myApp').
     component('noteList', {
         templateUrl:"note-list/note-list.template.html",
-        controller: 'NotesCtrl'
+        controller: 'NotesCtrl',
+        bindings: {
+            notes: '='
+        }
     });
 
 myApp.
     config(function($routeProvider) {
-
             $routeProvider.
                 when('/login', {
                     templateUrl: "views/login.html",
@@ -21,7 +23,7 @@ myApp.
 	                controller: 'DeleteCtrl'
 	            }).	
                 when('/notes/edit/:noteId', {
-	               template: '<note-list></note-list>',
+	               templateUrl: 'views/user-notes.html',
                     controller: 'EditCtrl'
 	            }).
                 when( '/new', {
@@ -90,6 +92,10 @@ myApp.
     })
     .controller('NotesCtrl' , function($scope, $http, $routeParams) {
 
+        console.log('noteCtrl');
+        $scope.Notes = '';
+        $scope.Message = '';
+
         $http({
             method : "GET",
             url : "/back-notes/user.php/",
@@ -103,6 +109,7 @@ myApp.
             $scope.Message = response['message'];
          })
     })
+
     .controller('DeleteCtrl', function($scope, $http, $routeParams) {
         $http({
             method : "POST",
