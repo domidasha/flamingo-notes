@@ -9,16 +9,31 @@
 <script src="app.js"></script>
 <body>
 
-<p>ddd</p>
+<?php
 
-<p>{{isAuth}}</p>
+include('../back-notes/functions.php');
 
-    <?php if(true) :?>
-        <p>true</p>
+
+
+function is_auth() {
+    $id = '';
+    if (isset($_SESSION['userId'])) {
+        $id = $_SESSION['userId'];
+    }
+    else {
+        $id = false;
+    }
+        return $id;
+    }
+?>
+
+
+    <?php if(is_auth()==false) :?>
+        <p>not auth</p>
         <div ng-view class="view"></div>
 
     <?php else : ?>
-       <p>false</p>
+       <p>auth</p>
         <div ng-view class="view"></div>
         <note-list></note-list>
 

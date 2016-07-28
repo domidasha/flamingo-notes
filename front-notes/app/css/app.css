@@ -52,6 +52,7 @@ textarea {
 .note {
     background-color: lightcyan;
     padding: 10px;
+    float: left;
     border-bottom: 1px dashed;
     border-color: #fbd850;
     padding-bottom: 15px;

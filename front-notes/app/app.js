@@ -45,21 +45,7 @@ myApp.
 
  .controller('LogCtrl', function($scope, $http) {
 
-      $scope.isAuth = function() {
-          $http({
-              method : "GET",
-              url : "/back-notes/isAuth.php/"
-
-          }).then(function mySuccess(response) {
-              alert($scope.isAuth);
-              console.log(response);
-              //$scope.Notes = response['data']['notes'];
-              //$scope.Message = response['message'];
-          })
-      }
-
-
-      $scope.Register = function() {
+       $scope.Register = function() {
             var data = {
                 login: $scope.login,
                 password: $scope.password,
@@ -80,7 +66,7 @@ myApp.
        $scope.SendData = function() {
             var request =  $http({
                 method: 'POST',
-                url: '/back-notes/index.php/',
+                url: '/front-notes/back-notes/index.php/',
                 headers: {
                     'Content-Type': undefined,
                     'Access-Control-Allow-Headers': "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding",
@@ -112,7 +98,7 @@ myApp.
 
         $http({
             method : "GET",
-            url : "/back-notes/user.php/",
+            url : "/front-notes/back-notes/user.php/",
             params: {
                 id: $routeParams.userId
             }
@@ -127,7 +113,7 @@ myApp.
     .controller('DeleteCtrl', function($scope, $http, $routeParams) {
         $http({
             method : "POST",
-            url : "/back-notes/notes.php/",
+            url : "/front-notes/back-notes/notes.php/",
             data: {
             	id: $routeParams.noteId,
                 action: 'delete'
@@ -136,7 +122,7 @@ myApp.
 
             $http({
                 method : "GET",
-                url : "/back-notes/user.php/",
+                url : "/front-notes/back-notes/user.php/",
                 params: {
                     id: response.data.userId
                 }
@@ -153,7 +139,7 @@ myApp.
 
         $http({
             method : "GET",
-            url : "/back-notes/notes.php/",
+            url : "/front-notes/back-notes/notes.php/",
             params: {
                 id: $routeParams.noteId
             }
@@ -171,7 +157,7 @@ myApp.
            $scope.userId = '';
            var request =  $http({
                 method: 'POST',
-                url: '/back-notes/notes.php',
+                url: '/front-notes/back-notes/notes.php',
                 headers: {
                     'Content-Type': undefined,
                     'Access-Control-Allow-Headers': "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding",
@@ -213,7 +199,7 @@ myApp.
 
            var request = $http({
                 method: 'POST',
-                url: '/back-notes/notes.php',
+                url: '/front-notes/back-notes/notes.php',
                 data: {
                     action: 'add',
                     title: $scope.noteTitle,
@@ -239,8 +225,8 @@ myApp.
     .controller('LogOutCtrl', function($http, $location) {
         $http({
             method : "GET",
-            url : "/back-notes/logout.php/"
+            url : "/front-notes/back-notes/logout.php/"
         }).then(function mySuccess(response) {
-            window.location = '#/login';
+            window.location = 'http://flamingo-notes.dev/front-notes/app/index.php#/login';
         });
     })
