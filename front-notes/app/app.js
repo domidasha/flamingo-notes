@@ -44,6 +44,21 @@ myApp.
     })
 
  .controller('LogCtrl', function($scope, $http) {
+
+      $scope.isAuth = function() {
+          $http({
+              method : "GET",
+              url : "/back-notes/isAuth.php/"
+
+          }).then(function mySuccess(response) {
+              alert($scope.isAuth);
+              console.log(response);
+              //$scope.Notes = response['data']['notes'];
+              //$scope.Message = response['message'];
+          })
+      }
+
+
       $scope.Register = function() {
             var data = {
                 login: $scope.login,
@@ -80,12 +95,11 @@ myApp.
                 function(response) {
                     if (response['success']) {
                         $scope.userId = response['id'];
-                        window.location = 'http://flamingo-notes.dev/front-notes/app/index.html#/notes/'+$scope.userId;
+                        window.location = 'http://flamingo-notes.dev/front-notes/app/index.php#/notes/'+$scope.userId;
                         $scope.errorMessage = false;
                     }
                     else {
                         $scope.errorMessage = response['message'];
-
                     }
                 });
         }

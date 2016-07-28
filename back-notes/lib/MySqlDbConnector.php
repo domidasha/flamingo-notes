@@ -7,6 +7,7 @@ class MySqlDbConnector {
 
     private function __construct() {
         $this->connect();
+        
     }
 
     public static function getInstance() {

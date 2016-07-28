@@ -52,6 +52,7 @@ class FlamingoListService
         $con = $this->connector->getConnection();
         $stmt = $con-> prepare('delete from notes where id = ?');
         $stmt->execute(array($id));
+
     }
 
     public function getNoteById($id)

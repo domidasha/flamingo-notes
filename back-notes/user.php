@@ -5,6 +5,7 @@
  $response['message']='';
  $flamingo =  new FlamingoListService();
 
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
 
     $inputJSON = file_get_contents('php://input');
@@ -17,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
             $response['message'] = 'already exists';
             $response['success']='false';
         } else {
+
             $response['message'] = 'new user is added';
             $response['success']='true';
             $flamingo ->createUser($newUser['login'], $newUser['password']);
@@ -24,6 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
     }
     echo json_encode($response);
 }
+
+
 
 
 if (isset($_GET['id'])) {

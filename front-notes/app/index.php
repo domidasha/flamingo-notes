@@ -9,10 +9,20 @@
 <script src="app.js"></script>
 <body>
 
+<p>ddd</p>
 
+<p>{{isAuth}}</p>
 
-<div ng-view class="view"></div>
-<note-list></note-list>
+    <?php if(true) :?>
+        <p>true</p>
+        <div ng-view class="view"></div>
+
+    <?php else : ?>
+       <p>false</p>
+        <div ng-view class="view"></div>
+        <note-list></note-list>
+
+    <?php endif; ?>
 
 </body>
 </html>
