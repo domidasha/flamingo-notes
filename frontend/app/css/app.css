@@ -1,0 +1,105 @@
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+.form {
+    float: left;
+    width: 300px;
+}
+
+.view {
+    width: 800px;
+    /*background-color: #fbd850;*/
+    padding: 15px;
+    margin: 0 auto;
+}
+
+textarea {
+    width: 300px;
+    height: 250px;
+    padding: 15px;
+}
+
+.notes {
+    width: 350px;
+    float: right;
+    margin-left: 15px;
+    color: #000000;
+    background-color: #1c94c4;
+}
+
+/*.note {*/
+    /*background-color: lightcyan;*/
+    /*padding: 10px;*/
+    /*float: left;*/
+    /*border-bottom: 1px dashed;*/
+    /*border-color: #fbd850;*/
+    /*padding-bottom: 15px;*/
+/*}*/
+
+/*.notes a{*/
+    /*text-decoration: none;*/
+    /*color: #fbd850;*/
+    /*background-color: #000000;*/
+    /*margin-right: 10px;*/
+    /*padding: 5px;*/
+/*}*/
+
+
+.login {
+    position: fixed;
+    margin-left: 50px;
+    /*background-color: #fbd850;*/
+    border: 3px solid;
+    border-color: lightcyan;
+    width: 200px;
+}
+
+.login ul {
+    list-style: none;
+}
+
+.login a, .edit {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.login a:hover{
+    color:lightcyan;
+}
+
+.error {
+    color: orangered;
+}
+
+.success {
+    color: greenyellow;
+}

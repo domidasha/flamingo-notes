@@ -1,0 +1,24 @@
+{{Message}}
+<div class ="notes">
+    <div>{{Message}}
+
+        <div class="notes" ng-controller="NotesCtrl">
+            <a href="#/new">Add new </a>
+            <a href='#/logout'>Logout </a>
+
+            <div ng-repeat="note in Notes" >
+                <h2>{{note.title}} </h2>
+                <p>{{note.text}}</p>
+                <a href="#/notes/edit/{{note.id}}">edit</a>
+                <a href="#/notes/delete/{{note.id}}">delete</a> <br>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!--ng-if="Message"-->
+
+

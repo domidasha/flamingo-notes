@@ -3,7 +3,7 @@
 .settings/
 .idea/
 npm-debug.log
-/front-notes/bower_components/*
-/front-notes/app/bower_components/*
-front-notes/bower_components/*
-front-notes/app/bower_components/*
+/frontend/bower_components/*
+/frontend/app/bower_components/*
+frontend/bower_components/*
+frontend/app/bower_components/*
