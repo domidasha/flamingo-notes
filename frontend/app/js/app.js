@@ -1,13 +1,23 @@
 var  myApp = angular.module('myApp', ['ngRoute']);
 
 
+
 angular.
     module('myApp').
     component('noteList', {
         templateUrl:"frontend/app/note-list/note-list.template.html",
-        controller: 'NotesCtrl',
+
         bindings: {
             notes: '='
+        },
+        controller: function()
+        {
+            var notes = [];
+            notifyListener.subscribe(this);
+
+            notify(notes);
+            selfnotes = notes;
+
         }
     });
 
@@ -39,24 +49,23 @@ myApp.
                    controller: 'NotesCtrl'
                 }).
                 when('/logout', {
-                	templateUrl: "frontend/app/views/login.html",
+                    templateUrl: "frontend/app/views/user-notes.html",
                     controller: 'LogOutCtrl'
                 }).
                 otherwise({
-                    redirectTo: '/login'
+                    redirectTo: '/logout'
                 });
     })
 
  .controller('LogCtrl', function($scope, $http) {
-
-       $scope.Register = function() {
+        $scope.Register = function () {
             var data = {
                 login: $scope.login,
                 password: $scope.password,
                 action: 'register'
             }
-            return $http.post('user.php', data).then(function(result){
-                if (result.data.success=='true') {
+            return $http.post('user.php', data).then(function (result) {
+                if (result.data.success == 'true') {
                     $scope.PostDataResponse = result.data.message;
                     $scope.errorMessage = false;
                 } else {
@@ -67,8 +76,9 @@ myApp.
             });
         }
 
-       $scope.SendData = function() {
-            var request =  $http({
+        $scope.SendData = function () {
+
+            var request = $http({
                 method: 'POST',
                 url: 'login.php',
                 headers: {
@@ -83,55 +93,19 @@ myApp.
             }).then(function mySuccess(response) {
                 $scope.userId = response.data.id;
                 $scope.errorMessage = false;
-                window.location = '#/notes/'+$scope.userId;
-           });
-            //request.success(
-            //    function(response) {
-            //        if (response['success']) {
-            //            $scope.userId = response['id'];
-            //            $scope.errorMessage = false;
-            //            window.location = '#/notes/'+$scope.userId;
-            //        }
-            //        else {
-            //            $scope.errorMessage = response['message'];
-            //        }
-            //    });
-        }
-    })
-    .controller('NotesCtrl' , function($scope, $http, $routeParams) {
-        //console.log('notes controller');
-
-        $scope.Message = '';
-
-        if ($routeParams.userId!=undefined) {
-            $scope.userId =$routeParams.userId;
+                window.location = '#/notes/' + $scope.userId;
+            })
         }
 
-        $http({
-            method : "GET",
-            url : "user.php",
-            params: {
-                id: $scope.userId
-               //id: $id
-            }
-        }).then(function mySuccess(response) {
-         //   console.log($scope.Notes);
-            var Notes = response['data']['notes'];
-            $scope.Message = response['message'];
-
-         //   console.log(Notes);
-
-            //var notes = [];
-            //Notes.forEach(function(item, i, Notes){
-            //    notes.push(item.text);
-            //    notes.push(item.text);
-            //    console.log(notes);
-            //});
-
-            $scope.Notes = Notes;
-
-         })
     })
+    .controller('NotesCtrl' , function($scope, $http, UpdateNotesContainer) {
+
+        var notes = [];
+        updateListener.subscribe(this);
+
+
+
+        })
 
     .controller('DeleteCtrl', function($scope, $http, $routeParams) {
         $http({
@@ -169,12 +143,13 @@ myApp.
         }).then(function mySuccess(response) {
            var Note = response['data']['note'];
 
-            $scope.noteId = Note.id;
-            $scope.noteTitle = Note.title;
-            $scope.noteText = Note.text;
-            $scope.userId = Note.user_id;
+          $scope.noteId = Note.id;
+          $scope.noteTitle = Note.title;
+          $scope.noteText = Note.text;
+          $scope.userId = Note.user_id;
+        },
 
-        }, function myError(response) {
+        function myError(response) {
             $scope.Message = response['message'];
         });
 
@@ -250,6 +225,72 @@ myApp.
             method : "GET",
             url : "logout.php"
         }).then(function mySuccess(response) {
-            window.location = '#/login';
+            window.location = 'http://flamingo-notes.dev/login.php';
         });
     })
+
+//myApp.factory('MyService', function () {
+//    return {
+//        sayHello: function () {
+//            console.log('hello');
+//        }
+//}
+//});
+
+//myApp.factory('UpdateNotes', function() {
+//
+//    var notes = {};
+//
+//    var Observer = function() {
+//        return {
+//            notify: function(index) {
+//                console.log("Observer " + index + " is notified!");
+//            }
+//        }
+//    }
+//
+//
+//    function getNotes() {
+//        $http({
+//            method: "GET",
+//            url: "user.php"
+//        }).then(function mySuccess(response) {
+//            console.log(response);
+//
+//            var Notes = response['data']['notes'];
+//            var Message = response['message'];
+//
+//            console.log(Notes);
+//
+//        })
+//        return Notes;
+//    }
+//
+//    return getNotes;
+//});
+
+
+    .factory('UpdateNotesComponent', function(){
+    var self = this;
+        var notes;
+        var _listeners = [];
+        this.subscribe = function(listener) {
+            _listeners.push(listener);
+        }
+
+        this.notifyListener = function() {
+            $http({
+                method: "GET",
+                url: "user.php"
+            }).then(function mySuccess(response) {
+                for (var i=0; i<Notifiers.length; i++) {
+                    notifiers[i].notify(['data']['notes'])
+                    }
+
+                //$scope.Notes = Notes;
+            })
+        }
+
+        return new UpdateNotesComponent;
+
+    });

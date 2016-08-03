@@ -28,12 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
 }
 
 
+if (isset($_GET)) {
 
+  //  if ($_GET['id'] == $_SESSION['userId']) {
 
-if (isset($_GET['id'])) {
-    if ($_GET['id'] == $_SESSION['userId']) {
-
-        $userId = $_GET['id']; // val1
+        $userId = $_SESSION['userId']; // val1
         $notes = $flamingo->getAllNotesByUserId($userId);
 
         if (!empty($notes)) {
@@ -42,10 +41,10 @@ if (isset($_GET['id'])) {
             $response['message'] = 'No notes are found.';
         }
         $response['success'] = true;
-    }
-else {
-    $response['success'] = false;
-    $response['message'] = 'Access is not allowed.';
-}
+//    }
+//else {
+//    $response['success'] = false;
+//    $response['message'] = 'Access is not allowed.';
+//}
     echo json_encode($response);
 };

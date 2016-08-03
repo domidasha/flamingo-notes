@@ -9,31 +9,26 @@
 <script src="frontend/app/js/app.js"></script>
 <body>
 
-<?php
-include('functions.php');
+    <?php
+    include('functions.php');
 
-function is_auth() {
-    $id = '';
-    if (isset($_SESSION['userId'])) {
-        $id = $_SESSION['userId'];
+    function is_auth() {
+        $id = '';
+        if (isset($_SESSION['userId'])) {
+            $id = $_SESSION['userId'];
+        }
+        else {
+            $id = false;
+        }
+        return $id;
     }
-    else {
-        $id = false;
-    }
-    return $id;
-}
-?>
+    ?>
 
-<?php if(is_auth()==false) :?>
-    <p>not auth</p>
-    <div ng-view class="view"></div>
+    <div class="view">
+        <note-list></note-list>
+        <div ng-view></div>
+    </div>
 
-<?php else : ?>
-    <p>auth</p>
-    <div ng-view class="view"></div>
-<!--    <note-list></note-list>-->
-
-<?php endif; ?>
 
 </body>
 </html>

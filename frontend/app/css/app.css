@@ -36,7 +36,6 @@
 
 .view {
     width: 800px;
-    /*background-color: #fbd850;*/
     padding: 15px;
     margin: 0 auto;
 }
@@ -44,7 +43,6 @@
 textarea {
     width: 300px;
     height: 250px;
-    padding: 15px;
 }
 
 .notes {
@@ -55,22 +53,22 @@ textarea {
     background-color: #1c94c4;
 }
 
-/*.note {*/
-    /*background-color: lightcyan;*/
-    /*padding: 10px;*/
-    /*float: left;*/
-    /*border-bottom: 1px dashed;*/
-    /*border-color: #fbd850;*/
-    /*padding-bottom: 15px;*/
-/*}*/
+.note {
+    background-color: lightcyan;
+    padding: 10px;
+    float: left;
+    border-bottom: 1px dashed;
+    border-color: #fbd850;
+    padding-bottom: 15px;
+}
 
-/*.notes a{*/
-    /*text-decoration: none;*/
-    /*color: #fbd850;*/
-    /*background-color: #000000;*/
-    /*margin-right: 10px;*/
-    /*padding: 5px;*/
-/*}*/
+.notes a{
+    text-decoration: none;
+    color: #fbd850;
+    background-color: #000000;
+    margin-right: 10px;
+    padding: 5px;
+}
 
 
 .login {
