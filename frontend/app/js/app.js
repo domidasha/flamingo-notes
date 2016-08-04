@@ -7,19 +7,13 @@ angular.
     component('noteList', {
         templateUrl:"frontend/app/note-list/note-list.template.html",
 
-        bindings: {
-            notes: '='
-        },
-        controller: function()
-        {
-            var notes = [];
-            notifyListener.subscribe(this);
-
-            notify(notes);
-            selfnotes = notes;
+        //bindings: {
+        //    notes: '='
+        //},
+        controller: 'NotesCtrl'
 
         }
-    });
+    );
 
 myApp.
     config(function($routeProvider) {
@@ -45,8 +39,8 @@ myApp.
                    controller: 'NewCtrl'
      	            }).
                 when('/notes/:userId', {
-                   templateUrl:"frontend/app/views/user-notes.html",
-                   controller: 'NotesCtrl'
+                   templateUrl:"frontend/app/views/user-notes.html"
+                   //controller: 'NotesCtrl'
                 }).
                 when('/logout', {
                     templateUrl: "frontend/app/views/user-notes.html",
@@ -56,6 +50,19 @@ myApp.
                     redirectTo: '/logout'
                 });
     })
+
+
+ .controller('NotesCtrl', ['$scope', 'UpdateNotesComponent', function ($scope, UpdateNotesComponent) {
+
+        var notes = [];
+
+        UpdateNotesComponent.subscribe(this);
+        UpdateNotesComponent.notifyListener().then(function(result) {
+            console.log(result.data.notes);
+            $scope.Notes = result.data.notes;
+        });
+
+    }])
 
  .controller('LogCtrl', function($scope, $http) {
         $scope.Register = function () {
@@ -98,14 +105,12 @@ myApp.
         }
 
     })
-    .controller('NotesCtrl' , function($scope, $http, UpdateNotesContainer) {
-
-        var notes = [];
-        updateListener.subscribe(this);
-
-
-
-        })
+    //.controller('NotesCtrl' , function($scope, $http, UpdateNotesContainer) {
+    //
+    //    var notes = [];
+    //    updateListener.subscribe(this);
+    //
+    //    })
 
     .controller('DeleteCtrl', function($scope, $http, $routeParams) {
         $http({
@@ -270,27 +275,38 @@ myApp.
 //});
 
 
-    .factory('UpdateNotesComponent', function(){
-    var self = this;
+    .factory('UpdateNotesComponent', function($http){
+        var self = this ;
+
         var notes;
         var _listeners = [];
         this.subscribe = function(listener) {
-            _listeners.push(listener);
-        }
 
-        this.notifyListener = function() {
-            $http({
+            _listeners.push(listener);
+
+        };
+        var UpdateNotesComponent  = this;
+
+
+        this.notifyListener = function () {
+
+            return $http.get('user.php').then(function(response) {
+                return response;
+            });
+
+           return $http({
                 method: "GET",
                 url: "user.php"
-            }).then(function mySuccess(response) {
-                for (var i=0; i<Notifiers.length; i++) {
-                    notifiers[i].notify(['data']['notes'])
-                    }
+           }).then(function mySuccess(response) {
 
-                //$scope.Notes = Notes;
-            })
-        }
+           for (var i = 0; i < _listeners.length; i++) {
 
-        return new UpdateNotesComponent;
+                _listeners[i].notify(response.data['notes'])
+    }
+               return response;
+           })
 
-    });
+        };
+            return UpdateNotesComponent;
+
+    })

@@ -21,7 +21,7 @@ include_once('functions.php');
         <br>
 
         <label>Password: </label><br>
-        <input name="password" type="text" size="25" />
+        <input name="password" type="password" size="25" />
         <input name="mySubmit" type="submit" value="Submit!" />
     </form>
 </body>
