@@ -27,6 +27,7 @@
     <div class="view">
         <note-list></note-list>
         <div ng-view></div>
+<!--        <note-list-green></note-list-green>-->
     </div>
 
 

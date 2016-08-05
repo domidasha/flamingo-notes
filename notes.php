@@ -14,14 +14,6 @@ $flamingo =  new FlamingoListService();
 
 
 
-
-
-
-//$flamingo -> updateNote(4, 2, 'Always like this', 'You can\'t stop what you can\'t see.');
-////$flamingo -> createNote('movie1', 2, 'Mathilda since I met you everything been different. So I just need some time alone. You need some time to grow up a little.');
-//$flamingo -> deleteNoteById(8);
-
-
 if (isset($_GET['id']) and isset($_SESSION['userId']) ) {
     $noteId = $_GET['id']; // val1
 

@@ -29,13 +29,17 @@
   padding: 0;
 }
 
+.edit {
+    position: fixed;
+}
+
 .form {
     float: left;
     width: 300px;
 }
 
 .view {
-    width: 800px;
+    width: 900px;
     padding: 15px;
     margin: 0 auto;
 }
@@ -46,11 +50,19 @@ textarea {
 }
 
 .notes {
-    width: 350px;
+    width: 450px;   /*250px;*/
     float: right;
+    padding: 0 5px;
     margin-left: 15px;
     color: #000000;
-    background-color: #1c94c4;
+    background-color: lightskyblue;
+}
+
+.notes-green {
+    float: right;
+    width: 250px;
+    background-color: chartreuse;
+    margin-right: 10px;
 }
 
 .note {
@@ -62,7 +74,7 @@ textarea {
     padding-bottom: 15px;
 }
 
-.notes a{
+.notes a, .notes-green a{
     text-decoration: none;
     color: #fbd850;
     background-color: #000000;

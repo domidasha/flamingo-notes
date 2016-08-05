@@ -6,14 +6,14 @@ angular.
     module('myApp').
     component('noteList', {
         templateUrl:"frontend/app/note-list/note-list.template.html",
-
-        //bindings: {
-        //    notes: '='
-        //},
         controller: 'NotesCtrl'
 
         }
-    );
+    )
+    //.component('noteListGreen', {
+    //    templateUrl: "frontend/app/note-list/note-list-green.template.html",
+    //    controller: 'NotesGreenCtrl'
+    //})
 
 myApp.
     config(function($routeProvider) {
@@ -55,14 +55,29 @@ myApp.
  .controller('NotesCtrl', ['$scope', 'UpdateNotesComponent', function ($scope, UpdateNotesComponent) {
 
         var notes = [];
+        var self = this;
 
         UpdateNotesComponent.subscribe(this);
-        UpdateNotesComponent.notifyListener().then(function(result) {
-            console.log(result.data.notes);
-            $scope.Notes = result.data.notes;
-        });
+        UpdateNotesComponent.loadNotes();
+
+        self.notify = function(data) {
+            $scope.Notes = data;
+        }
 
     }])
+
+    //.controller('NotesGreenCtrl', ['$scope', 'UpdateNotesComponent', function ($scope, UpdateNotesComponent) {
+    //
+    //    var self = this;
+    //
+    //    UpdateNotesComponent.subscribe(this);
+    //    UpdateNotesComponent.loadNotes();
+    //
+    //    self.notify = function(data) {
+    //        $scope.Notes = data;
+    //    }
+    //
+    //}])
 
  .controller('LogCtrl', function($scope, $http) {
         $scope.Register = function () {
@@ -105,38 +120,31 @@ myApp.
         }
 
     })
-    //.controller('NotesCtrl' , function($scope, $http, UpdateNotesContainer) {
-    //
-    //    var notes = [];
-    //    updateListener.subscribe(this);
-    //
-    //    })
 
-    .controller('DeleteCtrl', function($scope, $http, $routeParams) {
-        $http({
+    .controller('DeleteCtrl', function($scope, $http, $routeParams, UpdateNotesComponent) {
+        var request = $http({
             method : "POST",
             url : "notes.php",
             data: {
             	id: $routeParams.noteId,
                 action: 'delete'
             }
-        }).then(function mySuccess(response) {
-
-            $http({
-                method : "GET",
-                url : "user.php",
-                params: {
-                    id: response.data.userId
-                }
-
-            }).then(function mySuccess(response) {
-                $scope.Notes = response['data']['notes'];
-                $scope.Message = response['message'];
-
-            })
         });
+
+        request.success(
+            function(response) {
+                if (response['success']) {
+                    $scope.Message = response['message'];
+                    UpdateNotesComponent.loadNotes();
+                }
+                else {
+                    $scope.Message = response['message'];
+                }
+            }
+        );
+
     })
-    .controller('EditCtrl', function($scope, $http, $routeParams ) {
+    .controller('EditCtrl', function($scope, $http, $routeParams, UpdateNotesComponent) {
 
         $http({
             method : "GET",
@@ -148,11 +156,11 @@ myApp.
         }).then(function mySuccess(response) {
            var Note = response['data']['note'];
 
-          $scope.noteId = Note.id;
-          $scope.noteTitle = Note.title;
-          $scope.noteText = Note.text;
-          $scope.userId = Note.user_id;
-        },
+           $scope.noteId = Note.id;
+           $scope.noteTitle = Note.title;
+           $scope.noteText = Note.text;
+           $scope.userId = Note.user_id;
+         },
 
         function myError(response) {
             $scope.Message = response['message'];
@@ -179,13 +187,7 @@ myApp.
                 function( response) {
                     if (response['success']) {
                         $scope.Message = response['message'];
-                        $scope.userId = response['userId'];
-
-                        function refresh() {
-                            $scope.$apply(function(){
-                                $scope.Notes =  data.url;
-                            });
-                        }
+                        UpdateNotesComponent.loadNotes();
                     }
                     else {
                         $scope.Message = response['message'];
@@ -193,10 +195,15 @@ myApp.
                 });
         }
     })
-    .controller('NewCtrl', function($scope, $http ) {
+    .controller('NewCtrl', function($scope, $http, UpdateNotesComponent, PriorityTypes ) {
 
     	$scope.noteTitle = '';
     	$scope.noteText = '';
+        $scope.priorities = PriorityTypes.types;
+        $scope.filterCondition = PriorityTypes.filterCondition;
+
+        //console.log($scope.priorities);
+        //console.log($scope.filterCondition);
 
     	
         $scope.updateNote = function () {
@@ -213,6 +220,7 @@ myApp.
             });
             request.success(
                 function(response) {
+                    UpdateNotesComponent.loadNotes();
                     if (response['success']) {
                         $scope.Message = response['message'];
                         $scope.userId = response['userId'];
@@ -234,79 +242,52 @@ myApp.
         });
     })
 
-//myApp.factory('MyService', function () {
-//    return {
-//        sayHello: function () {
-//            console.log('hello');
-//        }
-//}
-//});
-
-//myApp.factory('UpdateNotes', function() {
-//
-//    var notes = {};
-//
-//    var Observer = function() {
-//        return {
-//            notify: function(index) {
-//                console.log("Observer " + index + " is notified!");
-//            }
-//        }
-//    }
-//
-//
-//    function getNotes() {
-//        $http({
-//            method: "GET",
-//            url: "user.php"
-//        }).then(function mySuccess(response) {
-//            console.log(response);
-//
-//            var Notes = response['data']['notes'];
-//            var Message = response['message'];
-//
-//            console.log(Notes);
-//
-//        })
-//        return Notes;
-//    }
-//
-//    return getNotes;
-//});
-
 
     .factory('UpdateNotesComponent', function($http){
         var self = this ;
+        var notes = [];
 
-        var notes;
         var _listeners = [];
         this.subscribe = function(listener) {
-
             _listeners.push(listener);
-
         };
+
         var UpdateNotesComponent  = this;
 
+        this.loadNotes = function () {
 
-        this.notifyListener = function () {
-
-            return $http.get('user.php').then(function(response) {
-                return response;
+            return $http.get('allNotes.php').then(function(response) {
+                notes = response.data['notes'];
+                self.updateNotes();
             });
-
-           return $http({
-                method: "GET",
-                url: "user.php"
-           }).then(function mySuccess(response) {
-
-           for (var i = 0; i < _listeners.length; i++) {
-
-                _listeners[i].notify(response.data['notes'])
-    }
-               return response;
-           })
-
         };
-            return UpdateNotesComponent;
 
+        this.updateNotes = function() {
+            for (var i = 0; i < _listeners.length; i++) {
+                _listeners[i].notify(notes)
+            }
+        }
+
+        return UpdateNotesComponent;
     })
+
+
+    .factory('PriorityTypes', function() {
+        var PriorityTypes = this;
+
+        this.types = [
+            {value: '1', displayName: 'High'},
+            {value: '2', displayName: 'Medium'},
+            {value: '3', displayName: 'Low'}
+        ]
+
+        this.filterCondition = {
+            priority: '2'
+        }
+
+
+        return PriorityTypes;
+
+});
+
+
