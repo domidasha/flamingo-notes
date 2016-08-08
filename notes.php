@@ -49,7 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$noteId = $note['id'];
 		$title= $note['title'];
 		$text = $note['text'];
-		$flamingo -> updateNote($noteId, $title, $text);
+		$priority = $note['priority'];
+		$flamingo -> updateNote($noteId, $title, $text, $priority);
         $response['message'] = 'note is changed successfully';
 
 	}
@@ -57,9 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$userId = $_SESSION['userId'];
         $title= $note['title'];
         $text = $note['text'];
+        $priority = $note['priority'];
+        
 
         if ($title!=''and $text!='') {
-            $flamingo -> createNote($title, $text, $userId);
+            $flamingo -> createNote($title, $text, $priority, $userId);
             $response['message'] = 'new note is added successfully';
             $response['userId'] = $userId;
         }

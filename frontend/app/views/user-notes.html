@@ -7,9 +7,6 @@
                 <p>Title :</p>
                 <input type="text" ng-model="noteTitle" required />
 
-
-
-
                 <select ng-model="filterCondition.priority">
                     <option ng-selected="{{priority.value == filterCondition.priority}}"
                             ng-repeat="priority in priorities"
@@ -17,8 +14,6 @@
                         {{priority.displayName}}
                     </option>
                 </select>
-
-
 
 
                 <!--<select id="priority" ng-model="data.singleSelect">-->

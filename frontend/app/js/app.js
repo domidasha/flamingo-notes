@@ -144,7 +144,7 @@ myApp.
         );
 
     })
-    .controller('EditCtrl', function($scope, $http, $routeParams, UpdateNotesComponent) {
+    .controller('EditCtrl', function($scope, $http, $routeParams, UpdateNotesComponent, PriorityTypes) {
 
         $http({
             method : "GET",
@@ -155,6 +155,11 @@ myApp.
 
         }).then(function mySuccess(response) {
            var Note = response['data']['note'];
+           
+           $scope.priorities = PriorityTypes.types;
+           $scope.filterCondition = {priority: Note.priority};
+           
+           console.log($scope.filterCondition);
 
            $scope.noteId = Note.id;
            $scope.noteTitle = Note.title;
@@ -167,6 +172,8 @@ myApp.
         });
 
         $scope.updateNote  = function () {
+        	console.log('filterCondition.priority');
+        	console.log($scope.filterCondition.priority);
            $scope.userId = '';
            var request =  $http({
                 method: 'POST',
@@ -180,7 +187,8 @@ myApp.
                     action: 'update',
                     id: $scope.noteId,
                     title:$scope.noteTitle,
-                    text: $scope.noteText
+                    text: $scope.noteText,
+                    priority: $scope.filterCondition.priority
                 }
             });
             request.success(
@@ -207,6 +215,7 @@ myApp.
 
     	
         $scope.updateNote = function () {
+        	console.log($scope.filterCondition.priority);
             $scope.userId = '';
 
            var request = $http({
@@ -215,7 +224,8 @@ myApp.
                 data: {
                     action: 'add',
                     title: $scope.noteTitle,
-                    text: $scope.noteText
+                    text: $scope.noteText,
+        			priority: $scope.filterCondition.priority
                 }
             });
             request.success(
@@ -288,6 +298,19 @@ myApp.
 
         return PriorityTypes;
 
+})
+.filter('startsWithLetter', function () {
+  return function (items, letter) {
+    var filtered = [];
+    var letterMatch = new RegExp(letter, 'i');
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      if (letterMatch.test(item.name.substring(0, 1))) {
+        filtered.push(item);
+      }
+    }
+    return filtered;
+  };
 });
 
 

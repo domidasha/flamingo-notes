@@ -5,8 +5,10 @@
         <div>
             <a href="#/new">Add new </a>
             <a href='#/logout'>Logout </a>
-
-            <div ng-repeat="note in Notes" >
+            
+			
+			
+            <div ng-repeat="note in Notes " >
                 <h2>{{note.title}} </h2>
                 <p>{{note.text}}</p>
                 <a href="#/notes/edit/{{note.id}}">edit</a>

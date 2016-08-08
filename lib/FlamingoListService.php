@@ -25,27 +25,27 @@ class FlamingoListService
     }
 
 
-    public function updateNote($noteId, $title, $text)
+    public function updateNote($noteId, $title, $text, $priority)
     {
 
         $con = $this->connector->getConnection();
 
         $stmt = $con->prepare("UPDATE notes
-                              SET title = ?, text = ?
+                              SET title = ?, text = ?, priority = ?
                               WHERE notes.id = ?
                               ");
-        $stmt->execute(array($title, $text, $noteId));
+        $stmt->execute(array($title, $text, $priority, $noteId));
     }
 
 
-    public function createNote($title, $text, $user_id)
+    public function createNote($title, $text, $priority, $user_id)
     {
 
         $con = $this->connector->getConnection();
         $stmt = $con->prepare("INSERT INTO notes
-                              (title, text, user_id)
-                              VALUES (?, ?, ?)");
-        $stmt->execute(array($title, $text, $user_id));
+                              (title, text, priority, user_id)
+                              VALUES (?, ?, ?, ?)");
+        $stmt->execute(array($title, $text, $priority, $user_id));
     }
 
     public function deleteNoteById($id) {
